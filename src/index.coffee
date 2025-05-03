@@ -21,5 +21,4 @@ class Runner
     map = RunMap.build runspec, @scenarios
     run @scenarios, map
 
-
 export default Runner
