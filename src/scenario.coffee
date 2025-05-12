@@ -1,14 +1,15 @@
 import assert from "@dashkite/assert"
 import CoffeeScript from "coffeescript"
 
+debug = ( process.env.debug? || process.env.DEBUG? )
 
 Scenario =
 
   verify: ( scenario, $ ) ->
     for assertion in scenario.assertions
       do ( assertion, { result } = {}) ->
-        result = eval CoffeeScript.compile assertion.path, bare: true
         try
+          result = eval CoffeeScript.compile assertion.path, bare: true
           if assertion.type?
             switch assertion.type
               when "regexp"
@@ -19,7 +20,7 @@ Scenario =
           else
             assert result
         catch error
-          if scenario.debug == true
+          if debug == true
             console.error "assertion failed: [ #{ assertion.path } ]"
             console.error "context ($):\n", $
           throw error

@@ -5,23 +5,24 @@ class Query
   @matching: ( name ) ->
     ( scenarios ) -> 
       scenarios
-        .find ( scenario ) -> scenario.name == name
+        ?.find ( scenario ) -> scenario.name == name
         ?.scenarios
 
   @children: ( scenarios ) ->
-    scenarios.filter ( scenario ) -> !scenario.scenarios?
+    scenarios?.filter ( scenario ) -> !scenario.scenarios?
 
 
   @descendents: ( scenarios ) ->
     result = []
-    for scenario in scenarios
-      if scenario.scenarios?
-        result = [ 
-          result...
-          ( Query.descendents scenario.scenarios )...
-        ]
-      else
-        result.push scenario
+    if scenarios?
+      for scenario in scenarios
+        if scenario.scenarios?
+          result = [ 
+            result...
+            ( Query.descendents scenario.scenarios )...
+          ]
+        else
+          result.push scenario
     result
 
   @build: ( path ) ->

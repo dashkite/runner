@@ -2,16 +2,24 @@ import * as Amen from "@dashkite/amen"
 import RunMap from "./run-map"
 import Scenario from "./scenario"
 
+debug = ( process.env.debug? || process.env.DEBUG? )
+
 run = ( scenarios, map ) ->
   for scenario in scenarios
-    Amen.test scenario.name, 
-      if scenario.scenarios?
-        await run scenario.scenarios, map
-      else
-        if ( f = map.get scenario )?
-          ->
-            Scenario.verify scenario,
-              await f scenario
+    await do ( scenario ) ->
+      Amen.test scenario.name, 
+        if scenario.scenarios?
+          await run scenario.scenarios, map
+        else
+          if ( f = map.get scenario )?
+            ->
+              try
+                result = await f scenario
+              catch error
+                if debug == true
+                  console.error "test failed for [ #{ scenario.name } ]"
+                  throw error
+              Scenario.verify scenario, result
 
 class Runner
 
