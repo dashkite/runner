@@ -1,7 +1,12 @@
+import { inspect } from "node:util"
+import { elide } from "@dashkite/joy/text"
 import assert from "@dashkite/assert"
 import CoffeeScript from "coffeescript"
 
 debug = ( process.env.debug? || process.env.DEBUG? )
+
+format = ( value ) ->
+  elide 30, "...", inspect value
 
 Scenario =
 
@@ -20,9 +25,20 @@ Scenario =
           else
             assert result
         catch error
-          if debug == true
-            console.error "assertion failed: [ #{ assertion.path } ]"
-            console.error "context ($):\n", $
+          console.error error if debug
+          if assertion.type?
+            relation = switch assertion.type
+              when "equal" then "=="
+              when "regexp" then "matches"
+              else assertion.type
+            
+            error = new Error "assertion failed: 
+              [ #{ assertion.path } ] #{ relation }
+              #{ format assertion.expect },
+              got #{ format result }"
+          else
+            error = new Error "assertion failed: 
+              #{ assertion.path }"
           throw error
 
 export default Scenario

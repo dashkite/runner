@@ -9,8 +9,8 @@ RunMap =
       runnable = Query
         .build path
         .apply scenarios
-      if runnable.length > 0
-        for scenario in runnable
+      if runnable? && ( runnable.length > 0 )
+        for scenario in runnable when scenario.assertions?
           map.set scenario, runner
       else
         console.warn "runner: no scenarios match

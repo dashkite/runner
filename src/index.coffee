@@ -13,12 +13,7 @@ run = ( scenarios, map ) ->
         else
           if ( f = map.get scenario )?
             ->
-              try
-                result = await f scenario
-              catch error
-                if debug == true
-                  console.error "test failed for [ #{ scenario.name } ]"
-                  throw error
+              result = await f scenario
               Scenario.verify scenario, result
 
 class Runner
