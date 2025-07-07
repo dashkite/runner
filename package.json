@@ -33,11 +33,9 @@
   "devDependencies": {
     "@dashkite/amen": "^0.2.0",
     "@dashkite/amen-console": "^0.0.2",
-    "@dashkite/assert": "^0.1.4",
+    "@dashkite/assert": "link:../assert",
     "@dashkite/genie": "link:../genie",
     "@dashkite/genie-clean": "link:../genie-clean",
     "@dashkite/genie-coffee": "link:../genie-coffee"
-  },
-  "dependencies": {
   }
 }

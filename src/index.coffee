@@ -1,6 +1,7 @@
 import * as Amen from "@dashkite/amen"
 import RunMap from "./run-map"
 import Scenario from "./scenario"
+import assert from "@dashkite/assert"
 
 debug = ( process.env.debug? || process.env.DEBUG? )
 
@@ -12,9 +13,16 @@ run = ( scenarios, map ) ->
           await run scenario.scenarios, map
         else
           if ( f = map.get scenario )?
-            ->
-              result = await f scenario
-              Scenario.verify scenario, result
+            if scenario.throws?
+              ->
+                assert.throws ( -> f scenario ), scenario.throws
+            else if scenario.rejects?
+              ->
+                assert.rejects ( -> f scenario ), scenario.rejects
+            else
+              ->
+                result = await f scenario
+                Scenario.verify scenario, result
 
 class Runner
 
