@@ -11,7 +11,6 @@ class Query
   @children: ( scenarios ) ->
     scenarios?.filter ( scenario ) -> !scenario.scenarios?
 
-
   @descendents: ( scenarios ) ->
     result = []
     if scenarios?

@@ -17,9 +17,6 @@ RunMap =
       if runnable? && ( runnable.length > 0 )
         for scenario in runnable when isRunnable scenario
           map.set scenario, runner
-      else
-        console.warn "runner: no scenarios match
-          runspec [ #{ path.join ', ' } ]"
     map
       
 export default RunMap
