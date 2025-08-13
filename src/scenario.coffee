@@ -1,4 +1,3 @@
-import { inspect } from "node:util"
 import { elide } from "@dashkite/joy/text"
 import assert from "@dashkite/assert"
 import CoffeeScript from "coffeescript"
@@ -6,7 +5,7 @@ import CoffeeScript from "coffeescript"
 debug = ( process.env.debug? || process.env.DEBUG? )
 
 format = ( value ) ->
-  elide 30, "...", inspect value
+  elide 30, "...", JSON.stringify value
 
 Scenario =
 
