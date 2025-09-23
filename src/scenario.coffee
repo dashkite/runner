@@ -5,7 +5,10 @@ import CoffeeScript from "coffeescript"
 debug = ( process.env.debug? || process.env.DEBUG? )
 
 format = ( value ) ->
-  elide 30, "...", JSON.stringify value
+  if value?
+    elide 30, "...", JSON.stringify value
+  else
+    undefined
 
 Scenario =
 
