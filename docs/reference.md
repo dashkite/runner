@@ -16,7 +16,7 @@ runner = Runner.make scenarios
 ```
 
 #### apply
-$apply: runspec \dashrightarrow undefined$
+$apply: runspec \dashrightarrow \emptyset$
 
 Maps the scenarios to specific logic defined in the `runspec` and executes the tests. The `runspec` defines how to process each named scenario or group of scenarios.
 
@@ -44,5 +44,8 @@ Assertions consist of:
 - **type**: The type of assertion (e.g., `deepEqual`, `equal`, `regexp`).
 - **expect**: The value to compare against.
 
-## Technical Note: Result Evaluation
+## Technical Notes
+
+### Result Evaluation
+
 When evaluating an assertion path, the result of the runner function is available as the variable `$`. Paths are compiled as bare CoffeeScript and evaluated at runtime.
