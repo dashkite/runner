@@ -42,7 +42,7 @@
   "dependencies": {
     "@dashkite/amen": "^0.9.31",
     "@dashkite/assert": "^0.7.31",
-    "@dashkite/joy": "^0.12.40",
+    "@dashkite/joy": "^0.12.42",
     "coffeescript": "^2.7.0"
   }
 }
