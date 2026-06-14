@@ -40,9 +40,9 @@
     "@dashkite/genie-release": "^0.5.16"
   },
   "dependencies": {
-    "@dashkite/amen": "^0.9.34",
+    "@dashkite/amen": "^0.9.35",
     "@dashkite/assert": "^0.7.31",
-    "@dashkite/joy": "^0.12.43",
+    "@dashkite/joy": "^0.12.44",
     "coffeescript": "^2.7.0"
   }
 }
