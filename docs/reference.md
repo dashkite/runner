@@ -2,12 +2,12 @@
 
 Detailed API documentation for the Runner class and declarative scenario structure.
 
-## The `Runner` Class
+## Runner
 
 The `Runner` class facilitates the execution of tests based on scenarios and corresponding runner logic.
 
-#### make
-$make: scenarios \to Runner$
+### make
+$make: scenarios \to runner$
 
 Creates a new `Runner` instance containing the specified scenarios. Scenarios are typically loaded from a YAML file.
 
@@ -15,37 +15,49 @@ Creates a new `Runner` instance containing the specified scenarios. Scenarios ar
 runner = Runner.make scenarios
 ```
 
-#### apply
+### apply
 $apply: runspec \dashrightarrow \emptyset$
 
 Maps the scenarios to specific logic defined in the `runspec` and executes the tests. The `runspec` defines how to process each named scenario or group of scenarios.
 
 ```coffeescript
 await runner.apply
-  "Request Builder": 
+  "My Component": 
     "*": ({ input }) ->
-      # Process and return result
       result
 ```
 
-## Scenario Structure
+## Scenario
 
 Scenarios define the input data and assertions for your tests.
 
-### Required Fields
-- **name**: A unique identifier for the scenario or group of scenarios.
-- **scenarios**: (Optional) An array of sub-scenarios.
-- **input**: (Optional) The data passed to the runner function.
-- **assertions**: (Optional) A list of declarative checks to run against the result.
+### name
+A unique identifier for the scenario or group of scenarios.
 
-### Assertions
-Assertions consist of:
-- **path**: A CoffeeScript expression evaluated against the result (the result is available as `$`).
-- **type**: The type of assertion (e.g., `deepEqual`, `equal`, `regexp`).
-- **expect**: The value to compare against.
+### scenarios
+An array of sub-scenarios. Use subgroups to organize scenarios into logical groups for better test reporting.
 
-## Technical Notes
+### input
+The data passed to the runner function.
 
-### Result Evaluation
+### assertions
+A list of declarative checks to run against the result.
 
-When evaluating an assertion path, the result of the runner function is available as the variable `$`. Paths are compiled as bare CoffeeScript and evaluated at runtime.
+### throws
+If a scenario includes a `throws` property, the runner automatically wraps the execution in the appropriate assertion check for synchronous errors.
+
+### rejects
+If a scenario includes a `rejects` property, the runner automatically wraps the execution in the appropriate assertion check for asynchronous errors.
+
+## Assertion
+
+Assertions consist of several fields to declare expected results.
+
+### path
+A CoffeeScript expression evaluated against the result. The result of the runner function is available as the variable `$`.
+
+### type
+The type of assertion (e.g., `deepEqual`, `equal`, `regexp`). Defaults to a truthy check if omitted.
+
+### expect
+The value to compare against.

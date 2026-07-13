@@ -5,42 +5,38 @@ Task-based scenarios and common patterns for using the Runner.
 ## Scenario-Based Testing
 
 ### Task
-Test a request builder by simulating a series of configuration changes and validating the final request.
+Test a component by simulating a series of configuration changes and validating the final request, leveraging the separation of concerns between test logic and test data.
 
 ### Runner Approach
-Define a `Request Builder` runner to handle the logic and scenarios in YAML for the data and assertions.
+Define a component runner to handle the execution logic in CoffeeScript, and use a YAML structure to define the inputs and expected outputs for each test case. Keep the runner logic focused on execution and move verification into the declarative assertions.
 
 ### Example
 ```coffeescript
 import Runner from "@dashkite/runner"
+# import scenarios from "./scenarios.yaml"
 
 Runner
   .make scenarios
   .apply
-    "Request Builder": 
+    "My Component": 
       "*": ({ input }) ->
-        builder = $.Request.Builder.make input
-        await builder.get()
-        builder
-          .update ( input ) ->
-            input.headers.authorization = "foo 123"
-            input
-        request = await builder.get()
-        request
+        # execution logic goes here
+        # return the result to be used by assertions
+        result
 ```
 
 ```yaml
-- name: Request Builder
+- name: My Component
   scenarios:
-    - name: Update headers after initial get
+    - name: Valid Input Scenario
       input:
-        url: "https://foobar.com/hello?name=world"
+        key: "value"
       assertions:
-        - path: ( $.headers.get "authorization" )
-          type: deepEqual
-          expect: 
-            scheme: foo
-            token: "123"
+        - path: "$.status"
+          expect: "success"
+        - path: "$.data.id"
+          type: "equal"
+          expect: 123
 ```
 
 ### Algorithm
@@ -53,30 +49,26 @@ Runner
 ## Generative Testing
 
 ### Task
-Run a large number of tests for a specific function with varying input data to identify edge cases.
+Run a large number of tests for a specific function with varying input data to identify edge cases without writing extensive manual test code.
 
 ### Runner Approach
-Generate a list of scenarios programmatically and pass them to the `Runner`.
+Generate a list of scenarios programmatically and pass them to the `Runner`. This allows for thousands of test cases with minimal extra code. 
 
 ### Example
 ```coffeescript
-# Generate 1000 test cases
-scenarios = for i in [ 1..1000 ]
-  name: "Generated Test #{i}"
-  input: i
-  assertions: [
-    path: "$ * 2"
-    expect: i * 2
-  ]
+# generate 1000 test cases goes here
+scenarios = generateScenarios()
 
 Runner
   .make scenarios
   .apply
-    "*": ({ input }) -> input * 2
+    "*": ({ input }) -> 
+        # execution logic goes here
+        input * 2
 ```
 
 ### Algorithm
-1.  Generate a list of scenario objects with unique names, input data, and assertions.
+1.  Generate a list of scenario objects programmatically with unique names, input data, and assertions.
 2.  Create a `Runner` using `Runner.make scenarios`.
-3.  Define the function logic in `apply`.
+3.  Define the function execution logic in `apply`.
 4.  Run the runner to execute all generated test cases.
